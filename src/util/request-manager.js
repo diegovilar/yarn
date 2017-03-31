@@ -6,6 +6,7 @@ import BlockingQueue from './blocking-queue.js';
 import * as constants from '../constants.js';
 import * as network from './network.js';
 import map from '../util/map.js';
+import {getAgentClassForUrl} from './http-agent.js';
 
 import typeof * as RequestModuleT from 'request';
 import type RequestT from 'request';
@@ -212,6 +213,13 @@ export default class RequestManager {
     params.headers = Object.assign({
       'User-Agent': this.userAgent,
     }, params.headers);
+
+    // Maybe we need a custom agent class
+    params.agentClass = getAgentClassForUrl(params.url);
+    if (params.agentClass) {
+      console.log(`Custom agent for ${params.url}: ${params.agentClass.name}`);
+      params.agentOptions = {keepAlive: true};
+    }
 
     const promise = new Promise((resolve, reject) => {
       this.queue.push({params, resolve, reject});
