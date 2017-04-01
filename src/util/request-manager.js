@@ -217,7 +217,6 @@ export default class RequestManager {
     // Maybe we need a custom agent class
     params.agentClass = getAgentClassForUrl(params.url);
     if (params.agentClass) {
-      console.log(`Custom agent for ${params.url}: ${params.agentClass.name}`);
       params.agentOptions = {keepAlive: true};
     }
 
