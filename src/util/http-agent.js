@@ -1,9 +1,12 @@
 /* @flow */
 
 import * as url from 'url';
-import {Agent as HttpAgent} from 'http';
-import {Agent as HttpsAgent} from 'https';
 import {__extends} from 'tslib';
+
+/* $FlowFixMe - http does export Agent */
+import {Agent as HttpAgent} from 'http';
+/* $FlowFixMe - https does export Agent */
+import {Agent as HttpsAgent} from 'https';
 
 /**
  * How we identify the default NPM registry
@@ -11,7 +14,7 @@ import {__extends} from 'tslib';
 const NPM_REGISTRY_HOST = /^https?:\/\/registry.npmjs.org(\:80)?/i;
 
 /**
- * Our classes cache repository
+ * Our classes cache repository (key is the registry url)
  */
 const _customAgentClasses = {};
 
@@ -39,9 +42,11 @@ export function getAgentClassForUrl(packageUrl: string): Function|null {
   }
 
   const urlObject = url.parse(packageUrl);
-  const registryUrl = urlObject.protocol + '//' +
+
+  // Typecasting to any so flow won't complaing about protocol and host...
+  const registryUrl = (urlObject.protocol: any) + '//' +
       (urlObject.auth ? urlObject.auth + '@' : '') +
-      urlObject.host;
+      (urlObject.host: any);
 
   // Create (and cache it) a new agent class for this registry, if one
   // doesn`t already exist
@@ -70,8 +75,9 @@ export function _extendAgentClassForRegistry(registryUrl: string): Function {
 
   // request uses the agent constructor name to compound its pool key,
   // so we need to make it unique for every registry
+  /* $FlowFixMe - Dated defs for Object? */
   Object.defineProperty(CustomYarnAgent, 'name', {writable: true});
-  CustomYarnAgent.name = `AgentFor:${registryUrl}`;
+  /* $FlowFixMe - Dated defs for Object? */
   Object.defineProperty(CustomYarnAgent, 'name', {writable: false});
 
   return CustomYarnAgent;

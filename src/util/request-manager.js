@@ -47,6 +47,8 @@ type RequestParams<T> = {
   key?: string,
   forever?: boolean,
   strictSSL?: boolean,
+  agentClass?: ?Function,
+  agentOptions?: any,
   headers?: {
     [name: string]: string
   },
