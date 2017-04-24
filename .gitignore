@@ -5,9 +5,9 @@
 /.nyc_output
 /coverage
 /dist
+/dist-debug
 /artifacts
 /updates
-/.roadrunner.json
 /resources/winsetup/generated.wxs
 /resources/winsetup/obj
 /resources/winsetup/bin
@@ -15,10 +15,9 @@
 .vs
 *.msi
 *.nupkg
-fbkpm_modules
 test/fixtures/**/.fbkpm
 /tmp/
 /__tests__/fixtures/**/_*
 /__tests__/fixtures/request-cache/GET/localhost/.bin
-/__tests__/fixtures/request-cache/
-/.vscode
+.idea
+.vscode

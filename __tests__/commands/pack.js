@@ -108,7 +108,7 @@ test.concurrent('pack should work with a minimal example', (): Promise<void> => 
   });
 });
 
-test.concurrent('pack should inlude all files listed in the files array', (): Promise<void> => {
+test.concurrent('pack should include all files listed in the files array', (): Promise<void> => {
   return runPack({}, 'files-include', async (config): Promise<void> => {
     const {cwd} = config;
     const files = await getFilesFromArchive(
@@ -130,7 +130,7 @@ test.concurrent('pack should include mandatory files not listed in files array i
       path.join(cwd, 'files-include-mandatory-v1.0.0.tgz'),
       path.join(cwd, 'files-include-mandatory-v1.0.0'),
     );
-    const expected = ['package.json', 'readme.md', 'license', 'changelog'];
+    const expected = ['package.json', 'index.js', 'readme.md', 'license', 'changelog'];
     expected.forEach((filename) => {
       expect(files.indexOf(filename)).toBeGreaterThanOrEqual(0);
     });
