@@ -21,7 +21,7 @@ const _customAgentClasses = {};
 /**
  * Gets an unique agent class for custom registries
  *
- * This function will return an agent class exclusive for the registry
+ * This function will return an exclusive agent class for the registry
  * where the package is being fetched from.
  *
  * It will cache classes and reuse them for ocurrences of the same registry
@@ -43,12 +43,12 @@ export function getAgentClassForUrl(packageUrl: string): Function|null {
 
   const urlObject = url.parse(packageUrl);
 
-  // Typecasting to any so flow won't complaing about protocol and host...
+  // Typecasting to any so flow won't complaint about protocol and host...
   const registryUrl = (urlObject.protocol: any) + '//' +
       (urlObject.auth ? urlObject.auth + '@' : '') +
       (urlObject.host: any);
 
-  // Create (and cache it) a new agent class for this registry, if one
+  // Create (and cache) a new agent class for this registry, if one
   // doesn`t already exist
   if (!_customAgentClasses[registryUrl]) {
     _customAgentClasses[registryUrl] = _extendAgentClassForRegistry(registryUrl);
@@ -77,6 +77,7 @@ export function _extendAgentClassForRegistry(registryUrl: string): Function {
   // so we need to make it unique for every registry
   /* $FlowFixMe - Dated defs for Object? */
   Object.defineProperty(CustomYarnAgent, 'name', {writable: true});
+  CustomYarnAgent.name = `AgentFor:${registryUrl}`;
   /* $FlowFixMe - Dated defs for Object? */
   Object.defineProperty(CustomYarnAgent, 'name', {writable: false});
 
